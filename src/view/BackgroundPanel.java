@@ -23,7 +23,7 @@ public class BackgroundPanel extends JPanel {
             ImageIcon icon = new ImageIcon(imageUrl);
             backgroundImage = icon.getImage();
         } catch (Exception e) {
-            System.err.println("Erro ao carregar imagem de fundo: " + e.getMessage());
+            System.err.println("Erro ao carregar imagem de fundo: " + e.getMessage()); // só pra testar
 
             setBackground(new Color(65, 105, 225));
         }
