@@ -1,30 +1,32 @@
 package entities;
 
-import java.time.LocalDate;
+public class Aparelho {
 
-	public class Aparelho {
-	
-		private String nomeAparelho;
-		private String defeito;
-		private LocalDate dataEntrada;
-		
-		
-	public Aparelho(String nomeAparelho, String defeito, LocalDate dataEntrada) {
-			
-		this.nomeAparelho = nomeAparelho;
-		this.defeito = defeito;
-		this.dataEntrada = dataEntrada;
-			
-	}
+    private String modelo;
+    private String defeitoDeclarado;
 
-	public LocalDate getDataEntrada() {
-		return dataEntrada;
-	}
+    public Aparelho() {
+    }
+
+    public Aparelho(String modelo, String defeitoDeclarado) {
+        this.modelo = modelo;
+        this.defeitoDeclarado = defeitoDeclarado;
+    }
 
 
-	public void setDataEntrada(LocalDate dataEntrada) {
-		this.dataEntrada = dataEntrada;
-	}		
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getDefeitoDeclarado() {
+        return defeitoDeclarado;
+    }
+
+    public void setDefeitoDeclarado(String defeitoDeclarado) {
+        this.defeitoDeclarado = defeitoDeclarado;
+    }
 }
-
-	

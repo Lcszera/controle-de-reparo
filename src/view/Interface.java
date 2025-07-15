@@ -8,18 +8,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
+import dao.ServicoDAO;
 
 public class Interface {
 
     private JFrame frame;
-    private BotoesArredondados btnLogar; 
+    private BotoesArredondados btnLogar;
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+
                     Interface window = new Interface();
+
                     window.frame.setVisible(true);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -27,8 +31,15 @@ public class Interface {
         });
     }
 
+
     public Interface() {
         initialize();
+
+        System.out.println("1. INICIANDO: Tentando criar DAO e chamar criarTabela()...");
+        dao.ServicoDAO dao = new dao.ServicoDAO();
+        System.out.println("2. Objeto ServicoDAO foi criado.");
+        dao.criarTabela();
+        System.out.println("3. Método criarTabela() foi chamado com sucesso.");
     }
 
     private void initialize() {
