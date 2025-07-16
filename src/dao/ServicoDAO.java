@@ -101,4 +101,27 @@ import java.util.List;
             return servicos;
         }
 
+        public void finalizarServico(Servico servico) {
+
+            String sql = "UPDATE servicos SET valor_peca = ?, valor_obra = ?, dias_garantia = ?, " +
+                    "data_finalizacao = ?, status = ? WHERE id = ?";
+
+            try (Connection conn = ConnectionFactory.createConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                pstmt.setDouble(1, servico.getValorPeca());
+                pstmt.setDouble(2, servico.getValorObra());
+                pstmt.setInt(3, servico.getDiasGarantia());
+                pstmt.setDate(4, Date.valueOf(servico.getDataFinalizacao()));
+                pstmt.setString(5, "Finalizado");
+                pstmt.setInt(6, servico.getId());
+
+                pstmt.executeUpdate();
+                System.out.println("Serviço com ID " + servico.getId() + " finalizado com sucesso.");
+
+            } catch (SQLException e) {
+                System.out.println("Erro ao finalizar serviço: " + e.getMessage());
+                e.printStackTrace();
+            }
+        }
 }

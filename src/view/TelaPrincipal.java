@@ -60,9 +60,12 @@ public class TelaPrincipal extends JFrame {
         btnVerificar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaVerificarRegistros telaVerificar = new TelaVerificarRegistros();
+
+                TelaVerificarRegistros telaVerificar = new TelaVerificarRegistros(TelaPrincipal.this);
                 telaVerificar.setVisible(true);
-                dispose();
+
+                TelaPrincipal.this.setVisible(false);
+
             }
         });
 

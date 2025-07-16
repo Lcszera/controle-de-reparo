@@ -6,14 +6,17 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 public class TelaVerificarRegistros extends JFrame {
 
     private JTable tabela;
     private DefaultTableModel tableModel;
+    private JFrame telaPrincipal;
 
-    public TelaVerificarRegistros() {
+    public TelaVerificarRegistros(JFrame telaPrincipal) {
         super("Verificar Registros Existentes");
+        this.telaPrincipal = telaPrincipal;
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);
         setLocationRelativeTo(null);
@@ -28,9 +31,12 @@ public class TelaVerificarRegistros extends JFrame {
         panel.add(lblTitulo, BorderLayout.NORTH);
 
 
-        String[] colunas = {"ID", "Nome Cliente", "Modelo Aparelho", "Defeito", "Data Entrada", "Status"};
+        String[] colunas = {"ID", "Nome", "Modelo", "Status", "Fim da Garantia", "Ação"};
         this.tableModel = new DefaultTableModel(colunas, 0);
         this.tabela = new JTable(tableModel);
+
+        int colunaAcao = 5;
+        tabela.getColumnModel().getColumn(colunaAcao).setCellEditor(new ButtonEditor(new JCheckBox(), this));
 
         tabela.setFont(new Font("Arial", Font.PLAIN, 14));
         tabela.setRowHeight(20);
@@ -40,7 +46,7 @@ public class TelaVerificarRegistros extends JFrame {
 
         JButton btnVoltar = new JButton("Voltar ao Menu Principal");
         btnVoltar.addActionListener(e -> {
-
+            this.telaPrincipal.setVisible(true);
             dispose();
         });
         panel.add(btnVoltar, BorderLayout.SOUTH);
@@ -51,20 +57,26 @@ public class TelaVerificarRegistros extends JFrame {
         carregarDadosNaTabela();
     }
 
-    private void carregarDadosNaTabela() {
+    public void carregarDadosNaTabela() {
         this.tableModel.setRowCount(0);
-
         ServicoDAO servicoDAO = new ServicoDAO();
         List<Servico> servicos = servicoDAO.listarTodos();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         for (Servico s : servicos) {
+            String fimGarantia = "N/A";
+
+            if (s.getDataFinalizacao() != null && s.getDiasGarantia() > 0) {
+                fimGarantia = s.getDataFinalizacao().plusDays(s.getDiasGarantia()).format(formatter);
+            }
+
             Object[] rowData = {
                     s.getId(),
                     s.getCliente().getNome(),
                     s.getAparelho().getModelo(),
-                    s.getAparelho().getDefeitoDeclarado(),
-                    s.getDataEntrada().toString(),
-                    s.getStatus()
+                    s.getStatus(),
+                    fimGarantia,
+                    "Finalizar"
             };
             this.tableModel.addRow(rowData);
         }
