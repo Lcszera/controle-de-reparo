@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.net.URL; 
 
+
 public class BackgroundPanel extends JPanel {
 
     private Image backgroundImage;

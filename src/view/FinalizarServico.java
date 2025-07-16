@@ -2,7 +2,6 @@ package view;
 
 import dao.ServicoDAO;
 import entities.Servico;
-
 import javax.swing.*;
 import java.awt.*;
 import java.time.LocalDate;
