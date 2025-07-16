@@ -1,69 +1,72 @@
 package view;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JTable;    
-import javax.swing.JScrollPane;  
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import dao.ServicoDAO;
+import entities.Servico;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.util.List;
 
 public class TelaVerificarRegistros extends JFrame {
 
-
-    private static final long serialVersionUID = 1L;
+    private JTable tabela;
+    private DefaultTableModel tableModel;
 
     public TelaVerificarRegistros() {
         super("Verificar Registros Existentes");
-
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-        setSize(900, 600); 
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(900, 600);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setBackground(new Color(240, 255, 240)); 
-        panel.setLayout(new BorderLayout()); 
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel lblTitulo = new JLabel("Registros de Aparelhos");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
         lblTitulo.setHorizontalAlignment(JLabel.CENTER);
-        panel.add(lblTitulo, BorderLayout.NORTH); 
+        panel.add(lblTitulo, BorderLayout.NORTH);
 
 
-        String[] columnNames = {"Nome Cliente", "CPF", "Telefone", "Modelo Aparelho", "Defeito", "Data Entrada"};
+        String[] colunas = {"ID", "Nome Cliente", "Modelo Aparelho", "Defeito", "Data Entrada", "Status"};
+        this.tableModel = new DefaultTableModel(colunas, 0);
+        this.tabela = new JTable(tableModel);
 
-        Object[][] data = {
-            {"João Silva", "123.456.789-00", "(11)98765-4321", "Samsung TV", "Não liga", "2024-06-01"},
-            {"Maria Souza", "098.765.432-10", "(21)91234-5678", "iPhone X", "Tela quebrada", "2024-06-10"},
-            {"Pedro Alves", "111.222.333-44", "(31)99876-1234", "Notebook Dell", "Superaquecendo", "2024-06-15"},
-            {"Ana Lima", "555.666.777-88", "(41)98765-1234", "Console PS5", "Erro de leitura", "2024-06-20"}
-        };
-        
-        JTable table = new JTable(data, columnNames); 
-        table.setFont(new Font("Arial", Font.PLAIN, 14)); 
-        table.setRowHeight(25); 
+        tabela.setFont(new Font("Arial", Font.PLAIN, 14));
+        tabela.setRowHeight(20);
 
-        JScrollPane scrollPane = new JScrollPane(table); 
+        JScrollPane scrollPane = new JScrollPane(tabela);
         panel.add(scrollPane, BorderLayout.CENTER);
 
-
         JButton btnVoltar = new JButton("Voltar ao Menu Principal");
-        btnVoltar.setFont(new Font("Arial", Font.BOLD, 16));
-        btnVoltar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        btnVoltar.addActionListener(e -> {
 
-                TelaPrincipal telaPrincipal = new TelaPrincipal(); 
-                telaPrincipal.setVisible(true);
-                dispose(); 
-            }
+            dispose();
         });
         panel.add(btnVoltar, BorderLayout.SOUTH);
 
-        add(panel); 
+
+        this.add(panel);
+
+        carregarDadosNaTabela();
+    }
+
+    private void carregarDadosNaTabela() {
+        this.tableModel.setRowCount(0);
+
+        ServicoDAO servicoDAO = new ServicoDAO();
+        List<Servico> servicos = servicoDAO.listarTodos();
+
+        for (Servico s : servicos) {
+            Object[] rowData = {
+                    s.getId(),
+                    s.getCliente().getNome(),
+                    s.getAparelho().getModelo(),
+                    s.getAparelho().getDefeitoDeclarado(),
+                    s.getDataEntrada().toString(),
+                    s.getStatus()
+            };
+            this.tableModel.addRow(rowData);
+        }
     }
 }

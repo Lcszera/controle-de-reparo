@@ -16,7 +16,7 @@ public class Servico {
 	private LocalDate dataFinalizacao;
 	private String status;
 	private double valorTotalCobrado;
-
+	private int id;
 
 	public Servico() {
 
@@ -89,6 +89,10 @@ public class Servico {
 	public String getStatus() {
 		return status;
 	}
+
+	public int getId() { return id; }
+
+	public void setId(int id) { this.id = id; }
 
 	public Servico(Cliente cliente, Aparelho aparelho, String pecaUsada, double valorPeca, double valorObra, int diasGarantia, LocalDate dataEntrada, LocalDate dataFinalizacao, String status, double valorTotalCobrado) {
 		this.cliente = cliente;

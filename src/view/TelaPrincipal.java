@@ -39,9 +39,12 @@ public class TelaPrincipal extends JFrame {
         btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TelaAdicionarRegistros telaAdicionar = new TelaAdicionarRegistros();
+
+
+                TelaAdicionarRegistros telaAdicionar = new TelaAdicionarRegistros(TelaPrincipal.this);
                 telaAdicionar.setVisible(true);
-                dispose();
+                TelaPrincipal.this.setVisible(false);
+
             }
         });
 

@@ -17,6 +17,7 @@ import java.time.format.DateTimeParseException;
 
 public class TelaAdicionarRegistros extends JFrame {
 
+
     private JTextField txtNome;
     private JFormattedTextField txtCpf;
     private JTextField txtEndereco;
@@ -24,12 +25,18 @@ public class TelaAdicionarRegistros extends JFrame {
     private JTextField txtModeloAparelho;
     private JTextArea txtDefeito;
     private JTextField txtDataEntrada;
-
     private BotoesArredondados btnSalvar;
     private BotoesArredondados btnVoltar;
 
-    public TelaAdicionarRegistros() {
+
+    private JFrame telaPrincipal;
+
+
+    public TelaAdicionarRegistros(JFrame telaPrincipal) {
         super("Adicionar Novo Registro");
+        this.telaPrincipal = telaPrincipal;
+
+
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(750, 700);
         setLocationRelativeTo(null);
@@ -130,13 +137,13 @@ public class TelaAdicionarRegistros extends JFrame {
         buttonPanel.add(btnVoltar);
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
 
-
-
-
         btnSalvar.addActionListener(e -> salvarRegistro());
 
 
         btnVoltar.addActionListener(e -> {
+
+
+            telaPrincipal.setVisible(true);
 
             dispose();
         });
@@ -158,7 +165,6 @@ public class TelaAdicionarRegistros extends JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, preencha Nome, Modelo e Data.", "Erro de Validação", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate dataEntrada = LocalDate.parse(dataEntradaTexto, formatter);
